@@ -1,6 +1,6 @@
 # franklin-discord-bot
 
-![](https://i.imgur.com/Xt2KRRf.png) [**Add me!**](https://discord.com/api/oauth2/authorize?client_id=845142608941547520&permissions=532576468032&scope=bot "Add me!")
+![](https://i.imgur.com/Xt2KRRf.png) [**Add me to your server!**](https://discord.com/api/oauth2/authorize?client_id=845142608941547520&permissions=532576468032&scope=bot "Add me!")
 
 Franklin es un bot para realizar consultas sobre el precio del dolar (blue, tarjeta, oficial), cryptos y el valor final de un producto con la carga impositiva en Argentina. Actualmente corre en Heroku.               
 **El prefijo para los comandos de Franklin es: `?`**
