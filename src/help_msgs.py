@@ -14,7 +14,7 @@ comandos = {'ben': 'Devuelve este mensaje de ayuda',
 
 
 
-# Continuara, tiene que haber una mejor forma de hacer esto pero me dio paja en ese momento xd
+
 img_coins = {   'BINANCE_LOGO': 'https://public.bnbstatic.com/image/cms/blog/20200707/631c823b-886e-4e46-b12f-29e5fdc0882e.png',
                 '1INCH':        'https://research.binance.com/static/images/projects/1inch/logo.png',
                 'AAVE':         'https://research.binance.com/static/images/projects/aave-protocol/logo2.png',
