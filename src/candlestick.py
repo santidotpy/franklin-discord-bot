@@ -3,6 +3,10 @@ import pandas as pd
 import requests
 import mplfinance as mpf
 
+
+"""
+This is not implemented at the moment
+"""
 def candles_graph(start_date, currency1, currency2, time_interval):
     url = f'https://dev-api.shrimpy.io/v1/exchanges/binance/candles'
     payload = {'interval': time_interval, 'baseTradingSymbol': currency1,
