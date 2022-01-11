@@ -1,7 +1,6 @@
 import time
 import discord
 import os
-#from discord import message
 from discord.embeds import Embed
 from discord.ext import commands
 from discord.ext.commands.core import bot_has_permissions
@@ -11,6 +10,7 @@ import dolar
 import unidades
 from help_msgs import comandos
 import crypto_related
+from candlestick import candles_graph, return_days_ago
 import memes
 
 
@@ -172,7 +172,6 @@ async def tax(ctx, pesos : float):
     author = ctx.message.author
     fotito = 'https://pbs.twimg.com/media/Et_Da3QXcAMm8jE?format=jpg&name=medium'
 
-    #embed = discord.Embed(title=f'Precio con Impuestos', description=f'🐍 Sin impuestos ${pesos} ARS\n✌️ Con impuestos ${total} ARS\nGracias al choreo de los impuestos 😠🤬', color = discord.Color.blue())
     
     embed = discord.Embed(title=f'Impuestos en Argentina 🇦🇷',
                           description=f'Conversion con la carga impositiva argentina\n\nRequested by {author.mention}',
@@ -200,14 +199,25 @@ async def price(ctx, from_crypto:str, to_crypto:str='USDT'):
     url = crypto_related.get_url_project(from_crypto)
     full_name = crypto_related.crypto_name(from_crypto)
 
+#   === Implementacion Candlesticks ===
+
+    file = discord.File('src/graph.png', filename='graph.png') # Discord para los embed pide hacer esto para poder mandar una foto que no sea http
+    current_day = return_days_ago()
+    candles_graph(start_date=current_day, currency1=from_crypto, currency2=to_crypto, time_interval='1h')
+    time.sleep(.55)
+
+
     embed = discord.Embed(title=f'Price of {full_name}',
                           url=url, description=f'1 **{from_crypto}** = {data} **{to_crypto}**',
                           color = discord.Color.orange())
 
     embed.set_thumbnail(url=fotito)
+
+    embed.set_image(url='attachment://graph.png') # el attachment de la imagen local
+
     embed.set_footer(text='Source: Binance')
 
-    await ctx.send(embed=embed)
+    await ctx.send(file=file, embed=embed)
     time.sleep(.15)
     await ctx.message.delete()
 
@@ -287,9 +297,6 @@ async def meme(ctx):
     await ctx.send(embed=embed)
     time.sleep(.15)
     await ctx.message.delete()
-
-
-
 
 
 

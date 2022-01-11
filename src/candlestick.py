@@ -1,13 +1,10 @@
 from matplotlib.pyplot import savefig, title, ylabel
 import pandas as pd
 import requests
+from datetime import date, timedelta
 import mplfinance as mpf
 
-
-"""
-This is not implemented at the moment
-"""
-def candles_graph(start_date, currency1, currency2, time_interval):
+def candles_graph(start_date, currency1, currency2='USDT', time_interval='1h'):
     url = f'https://dev-api.shrimpy.io/v1/exchanges/binance/candles'
     payload = {'interval': time_interval, 'baseTradingSymbol': currency1,
                'quoteTradingSymbol': currency2, 'startTime': start_date}
@@ -31,13 +28,13 @@ def candles_graph(start_date, currency1, currency2, time_interval):
                 'Close': close_price}
 
     df = pd.DataFrame(raw_data).set_index('Date')
-    #print(df)
 
-    mpf.plot(df, type='candle', style='yahoo', title=f'{currency1}/{currency2}', ylabel=f'{currency2}'""", savefig='graph'""")
-    mpf.show()
+    mpf.plot(df, type='candle', style='yahoo', title=f'{currency1}/{currency2}', ylabel=f'{currency2}', savefig='src/graph')
+    #mpf.show()
 
-    return df
+    #return df
 
-
-
-candles_graph(start_date='2021-12-27', currency1='SOL', currency2='USDT', time_interval='1h')
+def return_days_ago():
+    current_day = date.today() - timedelta(4)
+    return current_day
+    
