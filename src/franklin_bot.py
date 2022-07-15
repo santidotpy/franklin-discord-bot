@@ -34,6 +34,7 @@ async def on_ready():
 async def ben(ctx):
     ayuda = comandos['ben']
     bluehelp = comandos['blue']
+    usdthelp = comandos['usdt']
     tarjetahelp = comandos['tarjeta']
     cardhelp = comandos['card']
     oficialhelp = comandos['oficial']
@@ -45,8 +46,8 @@ async def ben(ctx):
 
     embed = discord.Embed(title='AYUDA', description='Guia de comandos de Franklin', color = discord.Color.red())
     # `` es para que en discord se vea como code
-    embed.add_field(name='Comando', value=f'`?ben`\n`?blue`\n`?tarjeta`\n`?card`\n`?oficial`\n`?usdars`\n`?tax`\n\n`?bio`\n\n`?price`\n\n\n`?meme`', inline=True)
-    embed.add_field(name='Descripcion', value=f'{ayuda}\n{bluehelp}\n{tarjetahelp}\n{cardhelp}\n{oficialhelp}\n{usdarshelp}\n{taxhelp}\n{biohelp}\n{pricehelp}\n{memes}', inline=True)
+    embed.add_field(name='Comando', value=f'`?ben`\n`?blue`\n`?usdt`\n`?tarjeta`\n`?card`\n`?oficial`\n`?usdars`\n`?tax`\n\n`?bio`\n\n`?price`\n\n\n`?meme`', inline=True)
+    embed.add_field(name='Descripcion', value=f'{ayuda}\n{bluehelp}\n{usdthelp}\n{tarjetahelp}\n{cardhelp}\n{oficialhelp}\n{usdarshelp}\n{taxhelp}\n{biohelp}\n{pricehelp}\n{memes}', inline=True)
 
     await ctx.send(embed=embed)
     time.sleep(.15)
@@ -183,7 +184,7 @@ async def usdt(ctx):
 @bot.command(description='Convierte el valor de algo a lo que pasaria costar por los impuestos')
 @bot_has_permissions(manage_messages=True)
 async def tax(ctx, pesos : float):
-    imp = 1.65
+    imp = 1.75
     total = round(pesos * imp, 2)
     author = ctx.message.author
     fotito = 'https://pbs.twimg.com/media/Et_Da3QXcAMm8jE?format=jpg&name=medium'
