@@ -163,6 +163,22 @@ async def usdars(ctx, usd : float):
     time.sleep(.15)
     await ctx.message.delete()
 
+@bot.command(description='Valor de USDT en Pesos 🇦🇷')
+@bot_has_permissions(manage_messages=True)
+async def usdt(ctx):
+    buy = crypto_related.usdt_arg_exchange()
+    exchanges = list(buy.keys())
+    price =  list(buy.values())
+
+    embed = discord.Embed(title='Compra USDT', color = discord.Color.green())
+    embed.add_field(name='"Exchange"', value='\n'.join(exchanges))
+    embed.add_field(name='Precio 🇦🇷', value='\n'.join(price))
+    embed.set_thumbnail(url='https://research.binance.com/static/images/projects/usd-tether/logo.png')
+    embed.set_footer(text='In Crypto We Trust')
+    await ctx.send(embed=embed)
+    time.sleep(.15)
+    await ctx.message.delete()
+
 
 @bot.command(description='Convierte el valor de algo a lo que pasaria costar por los impuestos')
 @bot_has_permissions(manage_messages=True)
