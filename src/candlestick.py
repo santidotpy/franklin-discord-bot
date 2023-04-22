@@ -38,3 +38,4 @@ def return_days_ago():
     current_day = date.today() - timedelta(4)
     return current_day
     
+#candles_graph(return_days_ago(), 'BTC', 'USDT', '1h')
