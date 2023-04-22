@@ -5,4 +5,5 @@ Procfile
 requirements.txt
 runtime.txt
 proba.py
+graph.png
 .env
