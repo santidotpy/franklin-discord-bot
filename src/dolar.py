@@ -1,54 +1,41 @@
 import requests
-#from requests.models import Response
-#from help_msgs import img_coins
-
-"""
-Aparentemente la api que utilizo para el valor de el dolar en sus diferentes versiones no esta funcionando,
-no se si es algo momentanio o algo mas serio
-"""
-"""
-def dolar_blue():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolarblue'
-    r = requests.get(url)
-    diccio = r.json()
-    return diccio
 
 
 def dolar_oficial():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolaroficial'
-    r = requests.get(url)
-    diccio = r.json()
-    return diccio
+    url = 'https://api.bluelytics.com.ar/v2/latest'
+    try:
+        r = requests.get(url)
+        data = r.json()
+        compra = data.get('oficial').get('value_buy')
+        venta = data.get('oficial').get('value_sell')
+        fecha = data.get('last_update')[:10]
+        return compra, venta, fecha
+    except:
+        return 'Error al obtener el valor del dolar oficial'
 
 
-def dolar_turista():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolarturista'
-    r = requests.get(url)
-    diccio = r.json()
-    return diccio
-    """
 def dolar_blue():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolarblue'
-    r = requests.get(url)
-    data = r.json()
-    compra = data.get('compra')
-    venta = data.get('venta')
-    fecha = data.get('fecha')
+    url = 'https://api.bluelytics.com.ar/v2/latest'
+    try:
+        r = requests.get(url)
+        data = r.json()
+        compra = data.get('blue').get('value_buy')
+        venta = data.get('blue').get('value_sell')
+        fecha = data.get('last_update')[:10]
+        return compra, venta, fecha
+    except:
+        return 'Error al obtener el valor del dolar blue'
+
+
+def dolar_tarjeta():
+    compra, venta, fecha = dolar_oficial()
+    compra = round(compra * 1.75, 2)
+    venta = round(venta * 1.75, 2)
     return compra, venta, fecha
 
-def dolar_oficial():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolaroficial'
-    r = requests.get(url)
-    data = r.json()
-    compra = data.get('compra')
-    venta = data.get('venta')
-    fecha = data.get('fecha')
-    return compra, venta, fecha
-
+# si te pasas de los 300 te afanan mas
 def dolar_turista():
-    url = 'https://api-dolar-argentina.herokuapp.com/api/dolarturista'
-    r = requests.get(url)
-    data = r.json()
-    venta = data.get('venta')
-    fecha = data.get('fecha')
-    return venta, fecha
+    compra, venta, fecha = dolar_oficial()
+    compra = round(compra * 2, 2)
+    venta = round(venta * 2, 2)
+    return compra, venta, fecha
