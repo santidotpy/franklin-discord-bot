@@ -12,12 +12,15 @@ from help_msgs import comandos
 import crypto_related
 from candlestick import candles_graph, return_days_ago
 import memes
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
-
+intents = discord.Intents.all()
 description = 'Bot que permite saber el precio de un protucto con la carga impositiva en Argentina (Ej. un juego de Steam) y el precio de distintas cryptos y divisas'
 
-bot = commands.Bot(command_prefix='?', description=description)
+bot = commands.Bot(command_prefix='?', description=description, intents=intents)
 
 @bot.event
 async def on_ready():
@@ -84,68 +87,99 @@ async def bio(ctx, idioma:str='esp'):
 @bot.command(description='Valor del dolar blue hasta la fecha en Argentina')
 @bot_has_permissions(manage_messages=True)
 async def oficial(ctx):
-    compra, venta, fecha = dolar.dolar_oficial()
+    try:
+        compra, venta, fecha = dolar.dolar_oficial()
 
-    embed = discord.Embed(title='Precio Dolar "OFICIAL"', color = discord.Color.green())
-    embed.add_field(name='Compra', value=f'${compra}', inline=True)
-    embed.add_field(name='Venta', value=f'${venta}', inline=True)
-    embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
-    embed.set_footer(text=fecha)
-    await ctx.send(embed=embed)
-    time.sleep(.15)
-    await ctx.message.delete()
+        embed = discord.Embed(title='Precio Dolar "OFICIAL"', color = discord.Color.green())
+        embed.add_field(name='Compra', value=f'${compra}', inline=True)
+        embed.add_field(name='Venta', value=f'${venta}', inline=True)
+        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
+        embed.set_footer(text=fecha)
+        await ctx.send(embed=embed)
+        # time.sleep(.15)
+        # await ctx.message.delete()
+    except:
+        await ctx.send('No se pudo obtener el precio del dolar oficial en este momento 😓')
 
 
 @bot.command(description='Valor del dolar blue hasta la fecha en Argentina')
 @bot_has_permissions(manage_messages=True)
 async def blue(ctx):
-    compra, venta, fecha = dolar.dolar_blue()
+    try:
+        compra, venta, fecha = dolar.dolar_blue()
 
-    # discord.Embed puede tener description si se quiere
-    embed = discord.Embed(title='Precio Dolar BLUE', color = discord.Color.green())
-    embed.add_field(name='Compra', value=f'${compra}', inline=True)
-    embed.add_field(name='Venta', value=f'${venta}', inline=True)
-    embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
-    embed.set_footer(text=fecha)
+        # discord.Embed puede tener description si se quiere
+        embed = discord.Embed(title='Precio Dolar BLUE', color = discord.Color.green())
+        embed.add_field(name='Compra', value=f'${compra}', inline=True)
+        embed.add_field(name='Venta', value=f'${venta}', inline=True)
+        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
+        embed.set_footer(text=fecha)
 
-    await ctx.send(embed=embed)
-    time.sleep(.15)
-    await ctx.message.delete()
+        await ctx.send(embed=embed)
+        # time.sleep(.15)
+        # await ctx.message.delete()
+    except:
+        await ctx.send('No se pudo obtener el precio del dolar blue en este momento 😓')
 
 
-@bot.command(description='Valor del dolar que te toma la tarjeta hasta la fecha en Argentina')
+@bot.command(description='Valor del dolar que te toma la tarjeta hasta la fecha en Argentina (< 300 USD)')
 @bot_has_permissions(manage_messages=True)
 async def tarjeta(ctx):
-    venta, fecha = dolar.dolar_turista()
+    try:
+        compra, venta, fecha = dolar.dolar_tarjeta()
 
-    # discord.Embed puede tener description si se quiere
-    embed = discord.Embed(title='Precio Dolar TARJETA', color = discord.Color.green())
-    embed.add_field(name='Precio', value=f'${venta}', inline=True)
-    embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
-    embed.set_footer(text=fecha)
+        # discord.Embed puede tener description si se quiere
+        embed = discord.Embed(title='Precio Dolar TARJETA (menor a 300 USD)', color = discord.Color.green())
+        embed.add_field(name='Compra', value=f'${compra}', inline=True)
+        embed.add_field(name='Venta', value=f'${venta}', inline=True)
+        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
+        embed.set_footer(text=fecha)
 
-    await ctx.send(embed=embed)
-    time.sleep(.15)
-    await ctx.message.delete()
+        await ctx.send(embed=embed)
+        # time.sleep(.15)
+        # await ctx.message.delete()
+    except:
+        await ctx.send('No se pudo obtener el precio del dolar tarjeta en este momento 😓')
+
+@bot.command(description='Convierte pesos argentinos a dolar turista (mayor a 300 USD)')
+@bot_has_permissions(manage_messages=True)
+async def turista(ctx):
+    try:
+        compra, venta, fecha = dolar.dolar_turista()
+
+        # discord.Embed puede tener description si se quiere
+        embed = discord.Embed(title='Precio Dolar TURISTA (mayor a 300 USD)', color = discord.Color.green())
+        #embed.add_field(name='Compra', value=f'${compra}', inline=True)
+        embed.add_field(name='Venta', value=f'${venta}', inline=True)
+        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
+        embed.set_footer(text=fecha)
+
+        await ctx.send(embed=embed)
+    except:
+        await ctx.send('No se pudo obtener el precio del dolar turista en este momento 😓')
 
 
-@bot.command(description='Convierte pesos argentinos a dolares a valor tarjeta')
+
+
+@bot.command(description='Convierte pesos argentinos a dolares a valor tarjeta (< 300 USD)')
 @bot_has_permissions(manage_messages=True)
 async def card(ctx, usd : float):
-    venta, fecha = dolar.dolar_turista()
+    compra, venta, fecha = dolar.dolar_tarjeta()
     venta = round(float(venta), 3)
     convert = round(usd * venta, 2)
     author = ctx.message.author
 
-    embed = discord.Embed(title='Dolares a Pesos Argentinos', description=f'A precio Dolar Tarjeta\n\nRequested by {author.mention}', color = discord.Color.green())
+    embed = discord.Embed(title='Dolares a Pesos Argentinos', description=f'A precio Dolar Tarjeta (menor a 300 USD)\n\nRequested by {author.mention}', color = discord.Color.green())
     embed.add_field(name='🇺🇸 Dolares', value=f'${usd} USD', inline=True)
     embed.add_field(name='🇦🇷 Pesos Argentinos', value=f'${convert} ARS', inline=True)
     embed.set_thumbnail(url='https://pbs.twimg.com/media/Et_Da3QXcAMm8jE?format=jpg&name=medium')
     embed.set_footer(text=f'$1 USD = ${venta} ARS | {fecha[0 : 10]}')
 
     await ctx.send(embed=embed)
-    time.sleep(.15)
-    await ctx.message.delete()
+    # time.sleep(.15)
+    # await ctx.message.delete()
+
+
 
 
 @bot.command(description='Convierte pesos argentinos a dolares a valor blue')
@@ -207,37 +241,40 @@ async def tax(ctx, pesos : float):
 @bot_has_permissions(manage_messages=True)
 async def price(ctx, from_crypto:str, to_crypto:str='USDT'):
     # in crypto we trust
-    data = crypto_related.crypto_binancio(from_crypto,to_crypto)
+    try:
+        data = crypto_related.crypto_binancio(from_crypto,to_crypto)
 
-    from_crypto = from_crypto.upper()
-    to_crypto = to_crypto.upper()
-    
-    fotito = crypto_related.get_coin_img(from_crypto)
-    url = crypto_related.get_url_project(from_crypto)
-    full_name = crypto_related.crypto_name(from_crypto)
+        from_crypto = from_crypto.upper()
+        to_crypto = to_crypto.upper()
+        
+        fotito = crypto_related.get_coin_img(from_crypto)
+        url = crypto_related.get_url_project(from_crypto)
+        full_name = crypto_related.crypto_name(from_crypto)
 
-#   === Implementacion Candlesticks ===
+    #   === Implementacion Candlesticks ===
 
-    file = discord.File('src/graph.png', filename='graph.png') # Discord para los embed pide hacer esto para poder mandar una foto que no sea http
-    current_day = return_days_ago()
-    candles_graph(start_date=current_day, currency1=from_crypto, currency2=to_crypto, time_interval='1h')
-    time.sleep(.55)
+        file = discord.File('src/graph.png', filename='graph.png') # Discord para los embed pide hacer esto para poder mandar una foto que no sea http
+        current_day = return_days_ago()
+        candles_graph(start_date=current_day, currency1=from_crypto, currency2=to_crypto, time_interval='1h')
+        time.sleep(.55)
 
 
-    embed = discord.Embed(title=f'Price of {full_name}',
-                          url=url, description=f'1 **{from_crypto}** = {data} **{to_crypto}**',
-                          color = discord.Color.orange())
+        embed = discord.Embed(title=f'Price of {full_name}',
+                            url=url, description=f'1 **{from_crypto}** = {data} **{to_crypto}**',
+                            color = discord.Color.orange())
 
-    embed.set_thumbnail(url=fotito)
+        embed.set_thumbnail(url=fotito)
 
-    embed.set_image(url='attachment://graph.png') # el attachment de la imagen local
+        embed.set_image(url='attachment://graph.png') # el attachment de la imagen local
 
-    embed.set_footer(text='Source: Binance')
+        embed.set_footer(text='Source: Binance')
 
-    await ctx.send(file=file, embed=embed)
-    time.sleep(.15)
-    await ctx.message.delete()
+        await ctx.send(file=file, embed=embed)
+        # time.sleep(.15)
+        # await ctx.message.delete()
 
+    except:
+        await ctx.send('No se pudo obtener el precio de la criptomoneda')
 
 
 # ==== CONVERCIONES ====
@@ -316,6 +353,11 @@ async def meme(ctx):
     await ctx.message.delete()
 
 
+if __name__ == '__main__':
+    if os.environ.get('TESTING_TOKEN') is None:
+        bot.run(os.environ['DISCORD_TOKEN'])
+    else:
+        bot.run(os.environ.get('TESTING_TOKEN'))
 
-
-bot.run(os.environ['DISCORD_TOKEN'])
+# bot.run(os.environ['DISCORD_TOKEN'])
+#bot.run(os.getenv('TESTING_TOKEN'))
