@@ -1,6 +1,7 @@
 import requests
 from json import JSONDecodeError
 from help_msgs import img_coins, projects
+# import concurrent.futures
 
 
 def get_coin_img(from_crypto):
@@ -30,12 +31,12 @@ def crypto_name(from_crypto: str):
         return coin_name
     else:
         return from_crypto
-    
 
-def crypto_binancio(from_coin:str, to_coin='USDT'):
+
+def crypto_binancio(from_coin: str, to_coin='USDT'):
     from_coin = from_coin.upper()
     to_coin = to_coin.upper()
-    
+
     url = f'https://www.binance.com/api/v3/ticker/24hr?symbol={from_coin}{to_coin}'
     r = requests.get(url)
     diccio = r.json()
@@ -49,26 +50,25 @@ def crypto_binancio(from_coin:str, to_coin='USDT'):
     else:
         return last_price[:-5]
 
-    
+
 def usdt_arg_exchange():
-    exchanges = [   'argenbtc', 'belo', 'bitex', 'bitmonedero', 'bitso',
-                    'buenbit', 'copter', 'criptofacil', 'cryptomkt', 'decrypto',
-                    'ftx','lemoncash', 'ripioexchange', 'satoshitango', 'tiendacrypto']
+    exchanges = ['argenbtc', 'belo', 'bitex', 'bitmonedero', 'bitso',
+                 'buenbit', 'copter', 'criptofacil', 'cryptomkt', 'decrypto',
+                 'lemoncash', 'ripioexchange', 'satoshitango', 'tiendacrypto']
 
     sorted_prices = {}
     for exchange in exchanges:
+        url = f'https://criptoya.com/api/{exchange}/usdt/ars'
         try:
-            url = f'https://criptoya.com/api/{exchange}/usdt/ars'
-            price = requests.get(url).json()['ask']
-            #sorted_prices = dict.fromkeys(exchange, price)
-            sorted_prices[exchange] = price
-        except JSONDecodeError:
-            url = f'https://criptoya.com/api/{exchange}/dai/ars'
             price = requests.get(url).json()['ask']
             sorted_prices[exchange] = price
+        except (requests.exceptions.HTTPError, requests.exceptions.RequestException, ValueError, KeyError) as e:
+            sorted_prices[exchange] = f'Error: {str(e)}'
 
-    sorted_prices = dict(sorted(sorted_prices.items(), key=lambda item: item[1]))
+    sorted_prices = dict(
+        sorted(sorted_prices.items(), key=lambda item: item[1]))
     # Capitalize exchange names
-    sorted_prices = dict((k.capitalize(), '$ '+ str(round(v, 2))) for k, v in sorted_prices .items())
-    
+    sorted_prices = dict((k.capitalize(), '$ ' + str(round(v, 2)))
+                         for k, v in sorted_prices .items())
+
     return sorted_prices
