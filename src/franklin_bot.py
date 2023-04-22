@@ -12,9 +12,9 @@ from help_msgs import comandos
 import crypto_related
 from candlestick import candles_graph, return_days_ago
 import memes
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 
 intents = discord.Intents.all()
@@ -354,10 +354,5 @@ async def meme(ctx):
 
 
 if __name__ == '__main__':
-    if os.environ.get('TESTING_TOKEN') is None:
-        bot.run(os.environ['DISCORD_TOKEN'])
-    else:
-        bot.run(os.environ.get('TESTING_TOKEN'))
-
-# bot.run(os.environ['DISCORD_TOKEN'])
-#bot.run(os.getenv('TESTING_TOKEN'))
+    bot.run(os.environ['DISCORD_TOKEN'])
+    
