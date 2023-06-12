@@ -1,3 +1,4 @@
+import asyncio
 import time
 import discord
 import os
@@ -202,16 +203,19 @@ async def usdars(ctx, usd : float):
 @bot_has_permissions(manage_messages=True)
 async def usdt(ctx):
     buy = crypto_related.usdt_arg_exchange()
-    exchanges = list(buy.keys())
-    price =  list(buy.values())
 
-    embed = discord.Embed(title='Compra USDT', color = discord.Color.green())
-    embed.add_field(name='"Exchange"', value='\n'.join(exchanges))
-    embed.add_field(name='Precio 🇦🇷', value='\n'.join(price))
+    embed = discord.Embed(title='Compra USDT', color=discord.Color.green())
     embed.set_thumbnail(url='https://research.binance.com/static/images/projects/usd-tether/logo.png')
     embed.set_footer(text='In Crypto We Trust')
+
+    field_value = ''
+    for exchange, price in buy.items():
+        field_value += f'{exchange.capitalize()}: $ {price:.2f}\n'
+
+    embed.add_field(name='Exchange / Precio 🇦🇷', value=field_value)
+
     await ctx.send(embed=embed)
-    time.sleep(.15)
+    await asyncio.sleep(0.15)
     await ctx.message.delete()
 
 

@@ -52,7 +52,7 @@ def crypto_binancio(from_coin: str, to_coin='USDT'):
 
 
 def usdt_arg_exchange():
-    exchanges = ['argenbtc', 'belo', 'bitex', 'bitmonedero', 'bitso',
+    exchanges = ['argenbtc', 'belo', 'bitmonedero', 'bitso',
                  'buenbit', 'copter', 'criptofacil', 'cryptomkt', 'decrypto',
                  'lemoncash', 'ripioexchange', 'satoshitango', 'tiendacrypto']
 
@@ -65,10 +65,6 @@ def usdt_arg_exchange():
         except (requests.exceptions.HTTPError, requests.exceptions.RequestException, ValueError, KeyError) as e:
             sorted_prices[exchange] = f'Error: {str(e)}'
 
-    sorted_prices = dict(
-        sorted(sorted_prices.items(), key=lambda item: item[1]))
-    # Capitalize exchange names
-    sorted_prices = dict((k.capitalize(), '$ ' + str(round(v, 2)))
-                         for k, v in sorted_prices .items())
+    sorted_prices = dict(sorted(sorted_prices.items(), key=lambda x: x[1]))
 
     return sorted_prices
