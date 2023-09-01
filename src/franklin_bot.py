@@ -131,6 +131,27 @@ async def blue(ctx):
         await ctx.send('No se pudo obtener el precio del dolar blue en este momento 😓')
 
 
+@bot.command(description='Valor del dolar MEP hasta la fecha en Argentina')
+@bot_has_permissions(manage_messages=True)
+async def mep(ctx):
+    try:
+        compra, venta = dolar.dolar_bolsa()
+        fecha = dolar.dolar_blue()[2]
+
+        # discord.Embed puede tener description si se quiere
+        embed = discord.Embed(title='Precio Dolar MEP',
+                              color=discord.Color.green())
+        embed.add_field(name='Compra', value=f'${compra}', inline=True)
+        embed.add_field(name='Venta', value=f'${venta}', inline=True)
+        embed.set_thumbnail(
+            url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
+        embed.set_footer(text=fecha)
+
+        await ctx.reply(embed=embed)
+    except:
+        await ctx.send('No se pudo obtener el precio del dolar MEP en este momento 😓')
+
+
 @bot.command(description='Valor del dolar que te toma la tarjeta hasta la fecha en Argentina (< 300 USD)')
 @bot_has_permissions(manage_messages=True)
 async def tarjeta(ctx):

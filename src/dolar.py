@@ -14,6 +14,19 @@ def dolar_oficial():
         return 'Error al obtener el valor del dolar oficial'
 
 
+def dolar_bolsa():
+    url = 'https://www.dolarsi.com/api/api.php?type=valoresprincipales'
+    try:
+        r = requests.get(url)
+        data = r.json()
+        nombre = data[4].get('casa').get('nombre')
+        compra = float(data[4].get('casa').get('compra').replace(',', '.'))
+        venta = float(data[4].get('casa').get('venta').replace(',', '.'))
+        return nombre, compra, venta
+    except:
+        return 'Error al obtener el valor del dolar bolsa'
+
+
 def dolar_blue():
     url = 'https://api.bluelytics.com.ar/v2/latest'
     try:
@@ -34,6 +47,8 @@ def dolar_tarjeta():
     return compra, venta, fecha
 
 # si te pasas de los 300 te afanan mas
+
+
 def dolar_turista():
     compra, venta, fecha = dolar_oficial()
     compra = round(compra * 2, 2)
