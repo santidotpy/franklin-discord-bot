@@ -19,10 +19,9 @@ def dolar_bolsa():
     try:
         r = requests.get(url)
         data = r.json()
-        nombre = data[4].get('casa').get('nombre')
         compra = float(data[4].get('casa').get('compra').replace(',', '.'))
         venta = float(data[4].get('casa').get('venta').replace(',', '.'))
-        return nombre, compra, venta
+        return compra, venta
     except:
         return 'Error al obtener el valor del dolar bolsa'
 
