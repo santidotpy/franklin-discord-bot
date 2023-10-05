@@ -52,8 +52,8 @@ def crypto_binancio(from_coin: str, to_coin='USDT'):
 
 
 def usdt_arg_exchange():
-    exchanges = ['argenbtc', 'belo', 'bitmonedero', 'bitso',
-                 'buenbit', 'copter', 'criptofacil', 'cryptomkt', 'decrypto',
+    exchanges = ['argenbtc', 'belo', 'bitmonedero',
+                 'buenbit', 'copter', 'cryptomkt', 'decrypto',
                  'lemoncash', 'ripioexchange', 'satoshitango', 'tiendacrypto']
 
     sorted_prices = {}
