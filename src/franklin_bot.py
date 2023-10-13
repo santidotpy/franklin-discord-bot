@@ -257,7 +257,7 @@ async def usdt(ctx):
 @bot.command(description='Convierte el valor de algo a lo que pasaria costar por los impuestos')
 @bot_has_permissions(manage_messages=True)
 async def tax(ctx, pesos: float):
-    imp = 1.75
+    imp = 2
     total = round(pesos * imp, 2)
     author = ctx.message.author
     fotito = 'https://pbs.twimg.com/media/Et_Da3QXcAMm8jE?format=jpg&name=medium'
