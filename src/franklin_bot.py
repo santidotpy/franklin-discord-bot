@@ -41,8 +41,7 @@ async def ben(ctx):
     ayuda = comandos['ben']
     bluehelp = comandos['blue']
     usdthelp = comandos['usdt']
-    tarjetahelp = comandos['tarjeta']
-    cardhelp = comandos['card']
+    usdcardhelp = comandos['usdcard']
     oficialhelp = comandos['oficial']
     usdarshelp = comandos['usdars']
     taxhelp = comandos['tax']
@@ -54,9 +53,9 @@ async def ben(ctx):
         title='AYUDA', description='Guia de comandos de Franklin', color=discord.Color.red())
     # `` es para que en discord se vea como code
     embed.add_field(
-        name='Comando', value=f'`?ben`\n`?blue`\n`?usdt`\n`?tarjeta`\n`?card`\n`?oficial`\n`?usdars`\n`?tax`\n\n`?bio`\n\n`?price`\n\n\n`?meme`', inline=True)
+        name='Comando', value=f'`?ben`\n`?blue`\n`?usdt`\n`?tarjeta`\n`?usdcard`\n`?oficial`\n`?usdars`\n`?tax`\n\n`?bio`\n\n`?price`\n\n\n`?meme`', inline=True)
     embed.add_field(name='Descripcion',
-                    value=f'{ayuda}\n{bluehelp}\n{usdthelp}\n{tarjetahelp}\n{cardhelp}\n{oficialhelp}\n{usdarshelp}\n{taxhelp}\n{biohelp}\n{pricehelp}\n{memes}', inline=True)
+                    value=f'{ayuda}\n{bluehelp}\n{usdthelp}\n{usdcardhelp}\n{oficialhelp}\n{usdarshelp}\n{taxhelp}\n{biohelp}\n{pricehelp}\n{memes}', inline=True)
 
     await ctx.reply(embed=embed)
 
@@ -152,63 +151,23 @@ async def mep(ctx):
         await ctx.send('No se pudo obtener el precio del dolar MEP en este momento 😓')
 
 
-@bot.command(description='Valor del dolar que te toma la tarjeta hasta la fecha en Argentina (< 300 USD)')
+@bot.command(description='Valor del dolar al realizar compras con tarjeta')
 @bot_has_permissions(manage_messages=True)
-async def tarjeta(ctx):
+async def usdcard(ctx, usd: float):
     try:
         compra, venta, fecha = dolar.dolar_tarjeta()
 
-        # discord.Embed puede tener description si se quiere
-        embed = discord.Embed(
-            title='Precio Dolar TARJETA (menor a 300 USD)', color=discord.Color.green())
-        embed.add_field(name='Compra', value=f'${compra}', inline=True)
-        embed.add_field(name='Venta', value=f'${venta}', inline=True)
-        embed.set_thumbnail(
-            url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
-        embed.set_footer(text=fecha)
-
-        await ctx.reply(embed=embed)
-    except:
-        await ctx.send('No se pudo obtener el precio del dolar tarjeta en este momento 😓')
-
-
-@bot.command(description='Convierte pesos argentinos a dolar turista (mayor a 300 USD)')
-@bot_has_permissions(manage_messages=True)
-async def turista(ctx):
-    try:
-        compra, venta, fecha = dolar.dolar_turista()
-
-        # discord.Embed puede tener description si se quiere
-        embed = discord.Embed(
-            title='Precio Dolar TURISTA (mayor a 300 USD)', color=discord.Color.green())
-        # embed.add_field(name='Compra', value=f'${compra}', inline=True)
-        embed.add_field(name='Venta', value=f'${venta}', inline=True)
-        embed.set_thumbnail(
-            url='https://upload.wikimedia.org/wikipedia/commons/2/23/US_one_dollar_bill%2C_obverse%2C_series_2009.jpg')
-        embed.set_footer(text=fecha)
-
-        await ctx.reply(embed=embed)
-    except:
-        await ctx.send('No se pudo obtener el precio del dolar turista en este momento 😓')
-
-
-@bot.command(description='Convierte pesos argentinos a dolares a valor tarjeta (< 300 USD)')
-@bot_has_permissions(manage_messages=True)
-async def card(ctx, usd: float):
-    try:
-        compra, venta, fecha = dolar.dolar_tarjeta()
-        venta = round(float(venta), 3)
-        convert = round(usd * venta, 2)
         author = ctx.message.author
 
         embed = discord.Embed(title='Dolares a Pesos Argentinos',
-                              description=f'A precio Dolar Tarjeta (menor a 300 USD)\n\nRequested by {author.mention}', color=discord.Color.green())
+                              description=f'A precio Dolar Tarjeta 💳\n\nRequested by {author.mention}', color=discord.Color.blue())
         embed.add_field(name='🇺🇸 Dolares', value=f'${usd} USD', inline=True)
         embed.add_field(name='🇦🇷 Pesos Argentinos',
-                        value=f'${convert} ARS', inline=True)
+                        value=f'${(usd * venta):.2f} ARS', inline=True)
+        embed.set_footer(text=f'$1 USD = ${venta} ARS')
         embed.set_thumbnail(
-            url='https://pbs.twimg.com/media/Et_Da3QXcAMm8jE?format=jpg&name=medium')
-        embed.set_footer(text=f'$1 USD = ${venta} ARS | {fecha[0 : 10]}')
+            url='https://www.usatoday.com/money/blueprint/images/uploads/2023/04/01055507/credit-card-vs-debit-card-e1690883737753.jpg')
+        embed.set_footer(text=fecha)
 
         await ctx.reply(embed=embed)
     except:
